@@ -35,12 +35,12 @@ module.exports = () => {
     module: {
       rules: [
         {
-          test: /.css$/,
+          test: /\.css$/,
           use: [
             'style-loader', 'css-loader'],
         },
         {
-          test: /.m?js$/,
+          test: /\.m?js$/,
           exclude: /node_modules/,
           use: {
             loader: 'babel-loader',
