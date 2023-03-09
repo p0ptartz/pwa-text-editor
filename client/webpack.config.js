@@ -17,14 +17,40 @@ module.exports = () => {
       filename: '[name].bundle.js',
       path: path.resolve(__dirname, 'dist'),
     },
-    plugins: [
-      
-    ],
+    plugins: [// Webpack plugin that generates our html file and injects our bundles. 
+      new HtmlWebpackPlugin({
+        template: './index.html',
+        title: 'Text editor'
+      }),
 
+      // Injects our custom service worker
+      new InjectManifest({
+        swSrc: './src-sw.js',
+        swDest: 'src-sw.js',
+      }),
+
+      // Creates a manifest.json file.
+      new WebpackPwaManifest()
+    ],
     module: {
       rules: [
-        
+        {
+          test: /.css$/,
+          use: [
+            'style-loader', 'css-loader'],
+        },
+        {
+          test: /.m?js$/,
+          exclude: /node_modules/,
+          use: {
+            loader: 'babel-loader',
+            options: {
+              presets: ['@babel/preset-env'],
+              plugins: ['@babel/plugin-proposal-object-rest-spread', '@babel/transform-runtime'],
+            },
+          },
+        },
       ],
     },
-  };
+  }
 };
